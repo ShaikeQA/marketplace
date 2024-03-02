@@ -19,10 +19,10 @@ public class Order {
         totalPrice = 0;
         discountApplied = false;
     }
-
-    public Map<Item, Integer> getItems() {
-        return cart;
-    }
+//    Аналогичный метод getCart()
+//    public Map<Item, Integer> getItems() {
+//        return cart;
+//    }
 
     public int getId() {
         return id;
