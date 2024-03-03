@@ -17,7 +17,6 @@ public class ArgumentsMethodsHelper {
         return toArguments.of(catalogItems);
     }
 
-
     public static Stream<Arguments> streamPromoCodes() {
         List<Double> promoCodesList = new ArrayList<>(Stream.of(PromoCodes.values()).map(PromoCodes::getDiscount).toList());
         List<PromoCodes> promoNames = new ArrayList<>(Stream.of(PromoCodes.values()).toList());

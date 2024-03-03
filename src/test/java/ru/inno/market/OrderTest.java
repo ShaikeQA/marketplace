@@ -4,7 +4,6 @@ import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import ru.inno.market.core.Catalog;
 import ru.inno.market.model.Client;
 import ru.inno.market.model.Item;
@@ -14,7 +13,6 @@ import ru.inno.market.model.PromoCodes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -139,9 +137,7 @@ public class OrderTest {
         //Создаем список товаров из каталога
         List<Item> items = new ArrayList<>(catalog.getStorage().keySet());
         //Попытка сложить в заказ товар, которого нет в списке
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            order.addItem(items.get(items.size() + 1));
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> order.addItem(items.get(items.size() + 1)));
     }
 
     @Test
@@ -162,7 +158,19 @@ public class OrderTest {
     @ParameterizedTest(name = "Промокод {1}")
     @DisplayName("Применение промокодов, проверка итоговой стоимости корзины")
     @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamPromoCodes")
-    public void applyAllPromoCodes (Double promoCount, PromoCodes promoCodes){
+    public void applyAllPromoCodes(Double promoCount, PromoCodes promoCodes) {
+        assertEquals(promoCodes.getDiscount(), promoCount);
+        order = new Order(1, client);
+        List<Item> items = new ArrayList<>(catalog.getStorage().keySet());
+
+        for (Item item : items) {
+            order.addItem(item);
+        }
+
+        double totalPriceBeforeDiscount = order.getTotalPrice();
+        order.applyDiscount(promoCount);
+
+        assertEquals(totalPriceBeforeDiscount * (1 - promoCount), order.getTotalPrice());
 
     }
 
