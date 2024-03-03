@@ -4,10 +4,12 @@ import jdk.jfr.Description;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import ru.inno.market.core.Catalog;
 import ru.inno.market.model.Client;
 import ru.inno.market.model.Item;
 import ru.inno.market.model.Order;
+import ru.inno.market.model.PromoCodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class OrderTest {
     Item appleIphoneSE;
 
     @BeforeEach
+
     public void setUp() {
         //Создали клиента
         client = new Client(1, "Rinat");
@@ -142,10 +145,24 @@ public class OrderTest {
     }
 
     @Test
-    @DisplayName("Применение скидки")
-    @ParameterizedTest
-    @
-    public void isDiscountAppliedValid(){
+    @DisplayName("Применение скидки без проверки ее размера")
+    public void isDiscountAppliedValid() {
+        order = new Order(1, client);
+        assertFalse(order.isDiscountApplied());
+
+        List<Item> items = new ArrayList<>(catalog.getStorage().keySet());
+
+        order.addItem(items.get(0));
+        order.addItem(items.get(1));
+
+        order.applyDiscount(PromoCodes.FIRST_ORDER.getDiscount());
+        assertTrue(order.isDiscountApplied());
+    }
+
+    @ParameterizedTest(name = "Промокод {1}")
+    @DisplayName("Применение промокодов, проверка итоговой стоимости корзины")
+    @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamPromoCodes")
+    public void applyAllPromoCodes (Double promoCount, PromoCodes promoCodes){
 
     }
 
