@@ -155,6 +155,7 @@ public class OrderTest {
         assertTrue(order.isDiscountApplied());
     }
 
+    @Tags({@Tag("sOrder"), @Tag("smoke")})
     @ParameterizedTest(name = "Промокод {1}")
     @DisplayName("Применение промокодов, проверка итоговой стоимости корзины")
     @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamPromoCodes")
