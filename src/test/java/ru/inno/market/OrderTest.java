@@ -1,12 +1,8 @@
 package ru.inno.market;
 
 import jdk.jfr.Description;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import ru.inno.market.core.Catalog;
 import ru.inno.market.model.Client;
@@ -16,12 +12,11 @@ import ru.inno.market.model.Order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@Tags({@Tag("regress"),@Tag("qgOrder")})
 public class OrderTest {
-    static Catalog catalog = new Catalog();
+    Catalog catalog;
     Order order;
     Client client;
     Item appleIphoneSE;
@@ -30,13 +25,15 @@ public class OrderTest {
     public void setUp() {
         //Создали клиента
         client = new Client(1, "Rinat");
+        catalog = new Catalog();
     }
 
     //Основной сценарий покрывающий добавление одного товара
     @Test
+    @Tag("firstTest")
     @DisplayName("Добавление iphoneSE в корзину с помощью метода addItem")
     @Description("Валидация кол-ва товаров, кол-во iphoneSE, итоговой стоимости заказа")
-    public void verifyAddItem() {
+    public void verifyAddItemFirstTest() {
         //Создали Item == appleIphoneSE
         appleIphoneSE = catalog.getItemById(1);
         //Создали новый заказ
@@ -54,11 +51,12 @@ public class OrderTest {
     }
 
     //Усложнил первый тест, добавил на вход поочередно список всех товаров из каталога и их кол-во
+    @Tags({@Tag("sOrder"), @Tag("smoke")})
     @DisplayName("Добавление товаров в корзину с помощью метода addItem")
     @ParameterizedTest(name = "Добавление {0}")
     @Description("Валидация кол-ва товаров, кол-во iphoneSE, итоговой стоимости заказа")
-    @MethodSource("ru.inno.market.ArgumentsMethodsHelper#streamAllCatalog")
-    public void verifyAddItemNew(Item item) {
+    @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamAllCatalog")
+    public void verifyAddItem(Item item) {
         //Создали новый заказ
         order = new Order(1, client);
         //Добавили iphoneSE в заказ
@@ -82,7 +80,7 @@ public class OrderTest {
         for (Item item : allItemsList) {
             order.addItem(item);
         }
-        assertEquals(12, order.getCart().size());
+        assertEquals(allItemsList.size(), order.getCart().size());
     }
 }
 
