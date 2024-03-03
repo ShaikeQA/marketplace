@@ -74,6 +74,10 @@ public class Catalog {
         throw new NoSuchElementException("Товар закончился");
 
     }
+//Добавил метод получения всего каталога
+    public Map<Item, Integer> getStorage() {
+        return storage;
+    }
 
     public int getCountForItem(Item i){
         return storage.get(i);
