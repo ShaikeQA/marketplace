@@ -58,7 +58,7 @@ public class OrderTest {
     @DisplayName("Добавление товаров в корзину с помощью метода addItem")
     @ParameterizedTest(name = "Добавление {0}")
     @Description("Валидация кол-ва товаров, кол-во iphoneSE, итоговой стоимости заказа")
-    @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamAllCatalog")
+    @MethodSource("steps.ArgumentsMethodsHelper#streamAllCatalog")
     public void verifyAddItem(Item item) {
         //Создали новый заказ
         order = new Order(1, client);
@@ -158,7 +158,7 @@ public class OrderTest {
     @Tags({@Tag("sOrder"), @Tag("smoke")})
     @ParameterizedTest(name = "Промокод {1}")
     @DisplayName("Применение промокодов, проверка итоговой стоимости корзины")
-    @MethodSource("ru.inno.market.steps.ArgumentsMethodsHelper#streamPromoCodes")
+    @MethodSource("steps.ArgumentsMethodsHelper#streamPromoCodes")
     public void applyAllPromoCodes(Double promoCount, PromoCodes promoCodes) {
         assertEquals(promoCodes.getDiscount(), promoCount);
         order = new Order(1, client);

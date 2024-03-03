@@ -1,4 +1,4 @@
-package ru.inno.market.steps;
+package steps;
 
 import org.junit.jupiter.params.provider.Arguments;
 import ru.inno.market.core.Catalog;
