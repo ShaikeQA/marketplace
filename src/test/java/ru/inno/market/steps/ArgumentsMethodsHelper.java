@@ -36,8 +36,8 @@ public class ArgumentsMethodsHelper {
 
         private static <T> Stream<Arguments> of(List<T> firstArguments) {
             List<Arguments> listOfArguments = new ArrayList<>();
-            for (int i = 0; i < firstArguments.size(); i++) {
-                listOfArguments.add(Arguments.of(firstArguments.get(i)));
+            for (T firstArgument : firstArguments) {
+                listOfArguments.add(Arguments.of(firstArgument));
             }
             return listOfArguments.stream();
         }
