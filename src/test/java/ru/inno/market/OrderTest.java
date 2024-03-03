@@ -31,7 +31,7 @@ public class OrderTest {
         catalog = new Catalog();
     }
 
-    //Основной сценарий покрывающий добавление одного товара
+    //Первый тест, который написал:)
     @Test
     @Tag("firstTest")
     @DisplayName("Добавление iphoneSE в корзину с помощью метода addItem")
